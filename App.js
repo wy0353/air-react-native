@@ -1,10 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { Asset } from 'expo-asset';
 import { Ionicons } from '@expo/vector-icons';
 import * as Font from 'expo-font';
+import { Provider } from 'react-redux';
+import Gate from './components/Gate';
+import store from "./redux/store";
 
 const cacheImages = images => 
   images.map(image => {
@@ -29,12 +31,13 @@ export default function App() {
     const fonts = [Ionicons.font]
     const imagePromises = cacheImages(images);
     const fontPromises = cacheFonts(fonts);
-    console.log(...imagePromises, ...fontPromises)
     return Promise.all([...fontPromises, ...imagePromises,])
   }
 
   return isReady ? (
-    <Text>I'm ready</Text>
+    <Provider store={store}>
+      <Gate />      
+    </Provider>
   ) : (
     <AppLoading
       onError={console.error}
