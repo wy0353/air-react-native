@@ -26,6 +26,7 @@ export default function App() {
   const loadAssets = () => {
     const images = [
       require("./assets/login_bg.jpg"),
+      require("./assets/room_default_001.jpg"),
       "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=668&q=80",
     ];
     const fonts = [Ionicons.font];

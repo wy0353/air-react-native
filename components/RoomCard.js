@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components/native";
 import Pt from "prop-types";
+import { Dimensions } from "react-native";
+import Swiper from "react-native-swiper";
+
+const { height } = Dimensions.get("screen");
 
 const Container = styled.View`
   width: 100%;
@@ -35,6 +39,18 @@ const PriceNumber = styled.Text`
   font-size: 16px;
 `;
 
+const PhotoContainer = styled.View`
+  margin-bottom: 7px;
+  overflow: hidden;
+  width: 100%;
+  height: ${height / 4}px;
+`;
+
+const SlideImage = styled.Image`
+  width: 100%;
+  height: 100%;
+`;
+
 const Roomcard = ({ id, isFavs, isSuperHost, photos, name, price }) => (
   <Container>
     {isSuperHost ? (
@@ -42,6 +58,17 @@ const Roomcard = ({ id, isFavs, isSuperHost, photos, name, price }) => (
         <SuperhostText>Superhost</SuperhostText>
       </Superhost>
     ) : null}
+    <PhotoContainer>
+      {photos.length === 0 ? (
+        <SlideImage resizeMode="repeat" source={require("../assets/room_default_001.jpg")} />
+      ) : (
+        <Swiper>
+          {photos.map(photo => (
+            <SlideImage key={photo.id} source={{ uri: photo.file }} />
+          ))}
+        </Swiper>
+      )}
+    </PhotoContainer>
     <Name>{name}</Name>
     <PriceContainer>
       <PriceNumber>${price}</PriceNumber>
