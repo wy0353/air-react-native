@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { isAndroid } from "../../utilities/Validator";
 
 const Container = styled.View`
-  ${isAndroid ? "padding-left: 0px;" : "padding-left: 10px;"}
+  ${isAndroid() ? "padding-left: 0px;" : "padding-left: 10px;"}
 `;
 export default () => (
   <Container>

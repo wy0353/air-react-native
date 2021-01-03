@@ -5,4 +5,4 @@ export const isEmail = email => {
   return regEx.test(email);
 };
 
-export const isAndroid = Platform.OS === "android" ? true : false;
+export const isAndroid = () => (Platform.OS === "android" ? true : false);

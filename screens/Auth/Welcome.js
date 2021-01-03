@@ -34,7 +34,7 @@ export default ({ navigation }) => {
   return (
     <Container>
       <BlurView
-        intensity={isAndroid ? 80 : 50}
+        intensity={isAndroid() ? 80 : 50}
         tint="light"
         style={{
           flex: 1,

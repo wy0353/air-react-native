@@ -14,16 +14,16 @@ export default () => {
       screenOptions={{
         headerBackTitleVisible: false,
         headerTitleAlign: "center",
-        headerTransparent: isAndroid ? false : true,
+        headerTransparent: isAndroid() ? false : true,
         headerBackImage: () => <BackBtn />,
       }}
-      headerMode={isAndroid ? "screen" : "float"}>
+      headerMode={isAndroid() ? "screen" : "float"}>
       <Auth.Screen
         name="Welcome"
         component={Welcome}
         options={{
           headerTitleStyle: {
-            color: isAndroid ? "black" : "white",
+            color: isAndroid() ? "black" : "white",
           },
         }}
       />
