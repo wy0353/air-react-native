@@ -3,6 +3,7 @@ import { ActivityIndicator, Text, StatusBar } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import styled from "styled-components/native";
 import Roomcard from "../../../components/RoomCard";
+import colors from "../../../resources/colors";
 
 const Container = styled.View`
   flex: 1;
@@ -28,7 +29,7 @@ const FakeText = styled.Text`
 `;
 
 const LoadMore = styled.View`
-  background-color: #006a70;
+  background-color: ${colors.green};
   align-items: center;
   padding: 15px 10px;
   border-radius: 10px;
