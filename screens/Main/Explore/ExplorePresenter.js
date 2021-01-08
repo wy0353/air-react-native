@@ -27,7 +27,21 @@ const FakeText = styled.Text`
   font-weight: 300;
 `;
 
-export default ({ rooms }) => {
+const LoadMore = styled.View`
+  background-color: #006a70;
+  align-items: center;
+  padding: 15px 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+`;
+
+const LoadMoreText = styled.Text`
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+`;
+
+export default ({ rooms, increasePage }) => {
   return (
     <Container>
       <StatusBar barStyle="dark-content" />
@@ -54,8 +68,10 @@ export default ({ rooms }) => {
               />
             ))}
 
-            <TouchableOpacity>
-              <Text>Load More</Text>
+            <TouchableOpacity onPress={increasePage}>
+              <LoadMore>
+                <LoadMoreText>Load More</LoadMoreText>
+              </LoadMore>
             </TouchableOpacity>
           </ScrollView>
         </>

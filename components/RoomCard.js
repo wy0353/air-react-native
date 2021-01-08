@@ -3,6 +3,11 @@ import styled from "styled-components/native";
 import Pt from "prop-types";
 import { Dimensions } from "react-native";
 import Swiper from "react-native-swiper";
+import { Ionicons } from "@expo/vector-icons";
+import { isAndroid } from "../utilities/Validator";
+import { useDispatch } from "react-redux";
+import { toggleFav } from "../redux/usersSlice";
+import colors from "../resources/colors";
 
 const { height } = Dimensions.get("screen");
 
@@ -10,8 +15,8 @@ const Container = styled.View`
   width: 100%;
   margin-bottom: 50px;
   align-items: flex-start;
+  position: relative;
 `;
-
 const Name = styled.Text`
   font-size: 18px;
   font-weight: 300;
@@ -51,31 +56,73 @@ const SlideImage = styled.Image`
   height: 100%;
 `;
 
-const Roomcard = ({ id, isFavs, isSuperHost, photos, name, price }) => (
-  <Container>
-    {isSuperHost ? (
-      <Superhost>
-        <SuperhostText>Superhost</SuperhostText>
-      </Superhost>
-    ) : null}
-    <PhotoContainer>
-      {photos.length === 0 ? (
-        <SlideImage resizeMode="repeat" source={require("../assets/room_default_001.jpg")} />
-      ) : (
-        <Swiper paginationStyle={{ marginBottom: -15 }} dotColor={"rgba(200, 200, 200, 0.8)"} activeDotColor={"white"}>
-          {photos.map(photo => (
-            <SlideImage key={photo.id} source={{ uri: photo.file }} />
-          ))}
-        </Swiper>
-      )}
-    </PhotoContainer>
-    <Name>{name}</Name>
-    <PriceContainer>
-      <PriceNumber>${price}</PriceNumber>
-      <PriceText> / night</PriceText>
-    </PriceContainer>
-  </Container>
-);
+const FavButton = styled.View`
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border-radius: 25px;
+  align-items: center;
+  justify-content: center;
+`;
+
+const TOpacity = styled.TouchableOpacity`
+  position: absolute;
+  z-index: 10;
+  right: 10px;
+  top: 10px;
+`;
+
+function getIconName(isFav) {
+  const isAnd = isAndroid();
+  if (isAnd) {
+    if (isFav) {
+      return "md-heart";
+    }
+    return "md-heart-outline";
+  } else {
+    if (isFav) {
+      return "ios-heart";
+    }
+    return "ios-heart-outline";
+  }
+}
+
+const Roomcard = ({ id, isFavs, isSuperHost, photos, name, price }) => {
+  const dispatch = useDispatch();
+  return (
+    <Container>
+      <TOpacity onPress={() => dispatch(toggleFav(id))}>
+        <FavButton>
+          <Ionicons color={isFavs ? colors.red : "black"} size={25} name={getIconName(isFavs)} />
+        </FavButton>
+      </TOpacity>
+      <PhotoContainer>
+        {photos.length === 0 ? (
+          <SlideImage resizeMode="repeat" source={require("../assets/room_default_001.jpg")} />
+        ) : (
+          <Swiper
+            paginationStyle={{ marginBottom: -15 }}
+            dotColor={"rgba(200, 200, 200, 0.8)"}
+            activeDotColor={"white"}>
+            {photos.map(photo => (
+              <SlideImage key={photo.id} source={{ uri: photo.file }} />
+            ))}
+          </Swiper>
+        )}
+      </PhotoContainer>
+      {isSuperHost ? (
+        <Superhost>
+          <SuperhostText>Superhost</SuperhostText>
+        </Superhost>
+      ) : null}
+      <Name>{name}</Name>
+      <PriceContainer>
+        <PriceNumber>${price}</PriceNumber>
+        <PriceText> / night</PriceText>
+      </PriceContainer>
+    </Container>
+  );
+};
 
 Roomcard.propTypes = {
   id: Pt.number.isRequired,
