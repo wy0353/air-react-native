@@ -1,5 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import Explore from "../screens/Main/Explore";
 import MapScreen from "../screens/Main/MapScreen";
@@ -7,11 +8,12 @@ import Profile from "../screens/Main/Profile";
 import Saved from "../screens/Main/Saved";
 import colors from "../resources/colors";
 import { isAndroid } from "../utilities/Validator";
+import Room from "../screens/Main/Room";
 
-const Main = createBottomTabNavigator();
+const TabNavigator = createBottomTabNavigator();
 
-export default () => (
-  <Main.Navigator
+const Tabs = () => (
+  <TabNavigator.Navigator
     tabBarOptions={{
       activeTintColor: colors.red,
       labelStyle: {
@@ -35,9 +37,17 @@ export default () => (
         return <Ionicons name={iconName} color={focused ? colors.red : "grey"} size={26} />;
       },
     })}>
-    <Main.Screen name="Explore" component={Explore}></Main.Screen>
-    <Main.Screen name="Saved" component={Saved}></Main.Screen>
-    <Main.Screen name="MapScreen" component={MapScreen}></Main.Screen>
-    <Main.Screen name="Profile" component={Profile}></Main.Screen>
-  </Main.Navigator>
+    <TabNavigator.Screen name="Explore" component={Explore} />
+    <TabNavigator.Screen name="Saved" component={Saved} />
+    <TabNavigator.Screen name="MapScreen" component={MapScreen} />
+    <TabNavigator.Screen name="Profile" component={Profile} />
+  </TabNavigator.Navigator>
+);
+
+const MainNavigator = createStackNavigator();
+export default () => (
+  <MainNavigator.Navigator mode="modal" screenOptions={{ headerBackTitleVisible: false }}>
+    <MainNavigator.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+    <MainNavigator.Screen name="RoomDetail" component={Room} />
+  </MainNavigator.Navigator>
 );
