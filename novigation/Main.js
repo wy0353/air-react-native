@@ -9,6 +9,7 @@ import Saved from "../screens/Main/Saved";
 import colors from "../resources/colors";
 import { isAndroid } from "../utilities/Validator";
 import Room from "../screens/Main/Room";
+import BackBtn from "../components/Auth/BackBtn";
 
 const TabNavigator = createBottomTabNavigator();
 
@@ -46,7 +47,12 @@ const Tabs = () => (
 
 const MainNavigator = createStackNavigator();
 export default () => (
-  <MainNavigator.Navigator mode="modal" screenOptions={{ headerBackTitleVisible: false }}>
+  <MainNavigator.Navigator
+    mode="modal"
+    screenOptions={{
+      headerBackTitleVisible: false,
+      headerBackImage: () => <BackBtn />,
+    }}>
     <MainNavigator.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
     <MainNavigator.Screen name="RoomDetail" component={Room} />
   </MainNavigator.Navigator>
