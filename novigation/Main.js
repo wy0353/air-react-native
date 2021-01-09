@@ -9,6 +9,7 @@ import Saved from "../screens/Main/Saved";
 import colors from "../resources/colors";
 import { isAndroid } from "../utilities/Validator";
 import Room from "../screens/Main/Room";
+import Search from "../screens/Main/Search";
 import BackBtn from "../components/Auth/BackBtn";
 import { BlurView } from "expo-blur";
 import { StyleSheet } from "react-native";
@@ -50,7 +51,7 @@ const Tabs = () => (
 const MainNavigator = createStackNavigator();
 export default () => (
   <MainNavigator.Navigator
-    mode="modal"
+    mode="card"
     screenOptions={{
       headerBackTitleVisible: false,
       headerBackImage: () => <BackBtn />,
@@ -66,5 +67,6 @@ export default () => (
       name="RoomDetail"
       component={Room}
     />
+    <MainNavigator.Screen options={{ headerShown: false }} name="Search" component={Search} />
   </MainNavigator.Navigator>
 );
