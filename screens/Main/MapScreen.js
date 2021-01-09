@@ -1,5 +1,11 @@
+import { func } from "prop-types";
 import React from "react";
+import { StyleSheet, Dimensions } from "react-native";
+import MapView from "react-native-maps";
+import { connect } from "react-redux";
 import styled from "styled-components/native";
+
+const { width, height } = Dimensions.get("screen");
 
 const Container = styled.View`
   flex: 1;
@@ -7,10 +13,43 @@ const Container = styled.View`
   align-items: center;
 `;
 
-const Text = styled.Text``;
+const ScrollView = styled.ScrollView`
+  position: absolute;
+  bottom: 50;
+`;
 
-export default () => (
-  <Container>
-    <Text>Map</Text>
-  </Container>
-);
+const RoomContainer = styled.View`
+  background-color: transparent;
+  width: ${width}px;
+  align-items: center;
+`;
+const RoomCard = styled.View`
+  background-color: white;
+  width: ${width - 80}px;
+  height: 200px;
+  margin-right: 20px;
+`;
+const RoonName = styled.Text``;
+
+const Map = ({ rooms }) => {
+  return (
+    <Container>
+      <MapView style={StyleSheet.absoluteFill} />
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} pagingEnabled>
+        {rooms?.map(room => (
+          <RoomContainer key={room.id}>
+            <RoomCard>
+              <RoonName>{room.name}</RoonName>
+            </RoomCard>
+          </RoomContainer>
+        ))}
+      </ScrollView>
+    </Container>
+  );
+};
+
+function mapStateToProps(state) {
+  return { rooms: state.roomsReducer.explore.rooms };
+}
+
+export default connect(mapStateToProps)(Map);
