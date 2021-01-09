@@ -74,16 +74,18 @@ function getIconName(isFav) {
   }
 }
 
-const Roomcard = ({ id, isFavs, isSuperHost, photos, name, price, roomObj }) => {
+const Roomcard = ({ id, isFavs, isSuperHost, photos, name, price, roomObj, from }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   return (
     <Container>
-      <TOpacity onPress={() => dispatch(toggleFav(id))}>
-        <FavButton>
-          <Ionicons color={isFavs ? colors.red : "black"} size={25} name={getIconName(isFavs)} />
-        </FavButton>
-      </TOpacity>
+      {from === "Search" ? null : (
+        <TOpacity onPress={() => dispatch(toggleFav(id))}>
+          <FavButton>
+            <Ionicons color={isFavs ? colors.red : "black"} size={25} name={getIconName(isFavs)} />
+          </FavButton>
+        </TOpacity>
+      )}
       <RoomPhotos photos={photos} />
       <TouchableOpacity
         style={{ alignItems: "flex-start" }}
