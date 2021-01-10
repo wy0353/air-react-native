@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import Explore from "../screens/Main/Explore";
-import MapScreen from "../screens/Main/MapScreen";
+import Map from "../screens/Main/Map";
 import Profile from "../screens/Main/Profile";
 import Saved from "../screens/Main/Saved";
 import colors from "../resources/colors";
@@ -32,18 +32,17 @@ const Tabs = () => (
           iconName += "search";
         } else if (route.name === "Saved") {
           iconName += "heart";
-        } else if (route.name === "MapScreen") {
+        } else if (route.name === "Map") {
           iconName += "map";
         } else if (route.name === "Profile") {
           iconName += "person";
         }
-
         return <Ionicons name={iconName} color={focused ? colors.red : "grey"} size={26} />;
       },
     })}>
     <TabNavigator.Screen name="Explore" component={Explore} />
     <TabNavigator.Screen name="Saved" component={Saved} />
-    <TabNavigator.Screen name="MapScreen" component={MapScreen} />
+    <TabNavigator.Screen name="Map" component={Map} />
     <TabNavigator.Screen name="Profile" component={Profile} />
   </TabNavigator.Navigator>
 );
