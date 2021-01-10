@@ -1,5 +1,5 @@
 import { func } from "prop-types";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, Dimensions } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { connect } from "react-redux";
@@ -50,6 +50,7 @@ const RoomPrice = styled.Text`
 `;
 
 const Map = ({ rooms }) => {
+  const mapRef = useRef();
   const [currentIndex, setCurrentIndex] = useState(0);
   const onScroll = e => {
     const {
@@ -61,14 +62,29 @@ const Map = ({ rooms }) => {
     const position = Math.abs(Math.round(x / width));
     setCurrentIndex(position);
   };
-  return (
-    <Container>
-      <MapView
-        style={StyleSheet.absoluteFill}
-        camera={{
+
+  useEffect(() => {
+    if (currentIndex !== 0) {
+      mapRef?.current?.animateCamera(
+        {
           center: {
             latitude: parseFloat(rooms[currentIndex].lat),
             longitude: parseFloat(rooms[currentIndex].lng),
+          },
+        },
+        { duration: 2000 }
+      );
+    }
+  }, [currentIndex]);
+  return (
+    <Container>
+      <MapView
+        ref={mapRef}
+        style={StyleSheet.absoluteFill}
+        camera={{
+          center: {
+            latitude: parseFloat(rooms[0].lat),
+            longitude: parseFloat(rooms[0].lng),
           },
           altitude: 10 * 300,
           pitch: 0,
