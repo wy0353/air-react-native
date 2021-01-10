@@ -1,7 +1,7 @@
 import { func } from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Dimensions } from "react-native";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { connect } from "react-redux";
 import styled from "styled-components/native";
 
@@ -50,22 +50,41 @@ const RoomPrice = styled.Text`
 `;
 
 const Map = ({ rooms }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const onScroll = e => {
+    const {
+      nativeEvent: {
+        contentOffset: { x },
+      },
+    } = e;
+
+    const position = Math.abs(Math.round(x / width));
+    setCurrentIndex(position);
+  };
   return (
     <Container>
       <MapView
         style={StyleSheet.absoluteFill}
         camera={{
           center: {
-            latitude: parseFloat(rooms[0].lat),
-            longitude: parseFloat(rooms[0].lng),
+            latitude: parseFloat(rooms[currentIndex].lat),
+            longitude: parseFloat(rooms[currentIndex].lng),
           },
-          altitude: 10 * 100,
+          altitude: 10 * 300,
           pitch: 0,
           heading: 0,
           zoom: 11,
-        }}
-      />
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} pagingEnabled>
+        }}>
+        {rooms?.map(room => (
+          <Marker key={room.id} coordinate={{ latitude: parseFloat(room.lat), longitude: parseFloat(room.lng) }} />
+        ))}
+      </MapView>
+      <ScrollView
+        scrollEventThrottle={200}
+        onScroll={onScroll}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        pagingEnabled>
         {rooms?.map(room => (
           <RoomContainer key={room.id}>
             <RoomCard>
