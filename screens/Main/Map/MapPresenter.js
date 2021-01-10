@@ -85,10 +85,10 @@ export default ({ rooms, mapRef, currentIndex, onScroll, onRegionChangeComplete 
         style={StyleSheet.absoluteFill}
         camera={{
           center: {
-            latitude: parseFloat(rooms[0].lat),
-            longitude: parseFloat(rooms[0].lng),
+            latitude: rooms ? parseFloat(rooms[0].lat) : 0,
+            longitude: rooms ? parseFloat(rooms[0].lng) : 0,
           },
-          altitude: 10 * 300,
+          altitude: 10 * 500,
           pitch: 0,
           heading: 0,
           zoom: 11,

@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Dimensions } from "react-native";
+import { ActivityIndicator, Dimensions } from "react-native";
+import api from "../../../utilities/api";
 import MapPresenter from "./MapPresenter";
 
 const { width, height } = Dimensions.get("screen");
 
-export default ({ rooms }) => {
+export default ({ rooms, token }) => {
   const mapRef = useRef();
   const [currentIndex, setCurrentIndex] = useState(0);
   const onScroll = e => {
@@ -37,10 +38,17 @@ export default ({ rooms }) => {
   }, [currentIndex]);
 
   const handleRegionChange = async () => {
-    console.log("scrolling...");
     try {
       const { northEast, southWest } = await mapRef.current?.getMapBoundaries();
-      console.log(northEast, southWest);
+      const form = {
+        east: northEast.longitude,
+        west: southWest.longitude,
+        south: southWest.latitude,
+        north: northEast.latitude,
+      };
+
+      const { data } = await api.search(form, token);
+      console.log(data);
     } catch (e) {
       console.warn(e);
     }
