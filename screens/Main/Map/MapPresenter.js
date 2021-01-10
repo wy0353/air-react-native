@@ -76,7 +76,7 @@ const RoomMarker = ({ selected, price }) => (
   </MarkerWrapper>
 );
 
-export default ({ rooms, mapRef, currentIndex, onScroll, onRegionChangeComplete }) => {
+export default ({ rooms, mapRef, currentIndex, onScroll, onRegionChangeComplete, isMoving }) => {
   return (
     <Container>
       <MapView
@@ -101,7 +101,7 @@ export default ({ rooms, mapRef, currentIndex, onScroll, onRegionChangeComplete 
       </MapView>
       <ScrollView
         scrollEventThrottle={200}
-        onScroll={onScroll}
+        onScroll={isMoving ? null : onScroll}
         horizontal
         showsHorizontalScrollIndicator={false}
         pagingEnabled>

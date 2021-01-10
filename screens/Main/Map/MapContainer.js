@@ -8,6 +8,8 @@ const { width, height } = Dimensions.get("screen");
 export default ({ rooms, token }) => {
   const mapRef = useRef();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [allRooms, setAllRooms] = useState(rooms);
+  const [isMoving, setIsMoving] = useState(false);
   const onScroll = e => {
     const {
       nativeEvent: {
@@ -20,21 +22,23 @@ export default ({ rooms, token }) => {
   };
 
   const moveMap = () => {
+    setIsMoving(true);
     mapRef?.current?.animateCamera(
       {
         center: {
-          latitude: parseFloat(rooms[currentIndex].lat),
-          longitude: parseFloat(rooms[currentIndex].lng),
+          latitude: parseFloat(allRooms[currentIndex].lat),
+          longitude: parseFloat(allRooms[currentIndex].lng),
         },
       },
-      { duration: 2000 }
+      { duration: 500 }
     );
+    setTimeout(() => {
+      setIsMoving(false);
+    }, 500);
   };
 
   useEffect(() => {
-    if (currentIndex !== 0) {
-      moveMap();
-    }
+    moveMap();
   }, [currentIndex]);
 
   const handleRegionChange = async () => {
@@ -47,19 +51,25 @@ export default ({ rooms, token }) => {
         north: northEast.latitude,
       };
 
-      const { data } = await api.search(form, token);
-      console.log(data);
+      const {
+        data: { results },
+      } = await api.search(form, token);
+
+      const all = [...allRooms, ...results];
+      const cleanedRooms = all.filter((room, index, self) => self.findIndex(t => t.id === room.id) === index);
+      setAllRooms(cleanedRooms);
     } catch (e) {
       console.warn(e);
     }
   };
   return (
     <MapPresenter
-      rooms={rooms}
+      rooms={allRooms}
       mapRef={mapRef}
       currentIndex={currentIndex}
       onScroll={onScroll}
       onRegionChangeComplete={handleRegionChange}
+      isMoving={isMoving}
     />
   );
 };
