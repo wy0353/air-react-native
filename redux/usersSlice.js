@@ -18,10 +18,13 @@ const usersSlice = createSlice({
       state.isLoggedIn = false;
       state.token = null;
     },
+    setUser(state, action) {
+      state.user = action.payload;
+    },
   },
 });
 
-export const { logIn, logOut } = usersSlice.actions;
+export const { logIn, logOut, setUser } = usersSlice.actions;
 
 export const userLogin = form => async dispatch => {
   try {
@@ -46,6 +49,18 @@ export const getFavs = () => async (dispatch, getState) => {
   try {
     const { data } = await api.favs(id, token);
     dispatch(setFavs(data));
+  } catch (e) {
+    console.warn(e);
+  }
+};
+
+export const getUserById = () => async (dispatch, getState) => {
+  const {
+    usersReducer: { id },
+  } = getState();
+  try {
+    const { data } = await api.getUserById(id);
+    dispatch(setUser(data));
   } catch (e) {
     console.warn(e);
   }
